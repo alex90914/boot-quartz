@@ -1,5 +1,6 @@
 package com.dream.quartz;
 
+import com.dream.quartz.job.MyJob;
 import com.dream.quartz.utils.QuartzUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,20 +23,14 @@ public class BootQuartzApplicationTests {
 
     @Test
     public void testName() throws Exception {
-        //schedulerFactory通过spring注入
-        Scheduler sche = schedulerFactory.getScheduler();
+        Scheduler scheduler = schedulerFactory.getScheduler();
         String job_name = "JOB_NAME";
-        String clazz = "cn.itsource.aigou.job.MainJob";
-        String cron = "/1 * * * * ? ";
+        String cron = "0/2 * * * * ? ";
         Map<String, Object> params = new HashMap<>();
         params.put("firstJob", 1);
         params.put("firstName", "myFirstName");
-        QuartzUtils.addJob(sche, job_name, Class.forName(clazz), params, cron);
-        Thread.sleep(10000);
-        System.out.println("【移除定时】开始...");
-        QuartzUtils.removeJob(sche, job_name);
-        System.out.println("【移除定时】成功");
+        QuartzUtils.addJob(scheduler, job_name, MyJob.class, params, cron);
+      //  System.in.read();
     }
-
 }
 
