@@ -2,7 +2,7 @@ server:
   port: 8012
 spring:
   datasource:
-    url: jdbc:mysql://118.25.212.23:3306/quartz?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://dreamatach.com/quartz?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: dream@2018.
     driver-class-name: com.mysql.jdbc.Driver
