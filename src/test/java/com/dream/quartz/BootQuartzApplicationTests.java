@@ -30,7 +30,10 @@ public class BootQuartzApplicationTests {
         params.put("firstJob", 1);
         params.put("firstName", "myFirstName");
         QuartzUtils.addJob(scheduler, job_name, MyJob.class, params, cron);
-      //  System.in.read();
+//        Thread.sleep(10000);
+//        System.out.println("【移除定时】开始...");
+//        QuartzUtils.removeJob(scheduler, job_name);
+//        System.out.println("【移除定时】成功");
     }
 }
 

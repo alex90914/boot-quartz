@@ -30,12 +30,28 @@ public class QuartzUtils {
      */
     public static void addJob(Scheduler scheduler, String jobName, @SuppressWarnings("rawtypes") Class cls, Object params, String time) {
         try {
+            //withMisfireHandlingInstructionDoNothing
             JobKey jobKey = new JobKey(jobName, JOB_GROUP_NAME);// 任务名，任务组，任务执行类
             JobDataMap jobDataMap = new JobDataMap();
             jobDataMap.put("params", params);
             JobDetail jobDetail = newJob(cls).withIdentity(jobKey).setJobData(jobDataMap).build();
             TriggerKey triggerKey = new TriggerKey(jobName, TRIGGER_GROUP_NAME);// 触发器
-            Trigger trigger = newTrigger().withIdentity(triggerKey).withSchedule(cronSchedule(time)).build();// 触发器时间设定
+            CronTrigger trigger = newTrigger().withIdentity(triggerKey).withSchedule(cronSchedule(time)).build();// 触发器时间设定
+            /**
+             * 调度(scheduleJob)或恢复调度(resumeTrigger,resumeJob)后不同的misfire对应的处理规则
+             * CronTrigger
+             * withMisfireHandlingInstructionDoNothing
+             * ——不触发立即执行
+             * ——等待下次Cron触发频率到达时刻开始按照Cron频率依次执行
+             * withMisfireHandlingInstructionIgnoreMisfires
+             * ——以错过的第一个频率时间立刻开始执行
+             * ——重做错过的所有频率周期后
+             * ——当下一次触发频率发生时间大于当前时间后，再按照正常的Cron频率依次执行
+             * withMisfireHandlingInstructionFireAndProceed
+             * ——以当前时间为触发频率立刻触发一次执行
+             * ——然后按照Cron频率依次执行
+             */
+            // CronTrigger trigger = newTrigger().withIdentity(triggerKey).withSchedule(cronSchedule(time).withMisfireHandlingInstructionDoNothing()).build();// 触发器时间设定
             scheduler.scheduleJob(jobDetail, trigger);
             if (!scheduler.isShutdown()) {
                 scheduler.start();// 启动
