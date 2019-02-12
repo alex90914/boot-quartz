@@ -1,5 +1,6 @@
 package com.dream.quartz.job;
 
+import com.dream.quartz.constant.JobConstant;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -18,6 +19,7 @@ public class MyJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        jobDataMap.get(JobConstant.JOB_PARAMS_KEY);
         System.out.println("你好啊 :" + new Date());
     }
 }
